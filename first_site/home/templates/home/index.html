@@ -1,9 +1,41 @@
-{% if question_list %}
+{% load static %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'home/css/flexslider.css' %}" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'home/css/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="../../static/home/js/jquery.flexslider.js"></script>
+    <script src="../../static/home/js/script_flexslider.js"></script>
+    <title>Список продукции</title>
+</head>
+
+<body>
+<div class="shell">
+  <div class="flexslider">
+    <ul class="slides">
+    <li>
+      <img alt="sweet home" src= "{% static 'home/images/image_1.jpg' %}" />
+    </li>
+    <li>
+      <img src="{% static 'home/images/image_2.jpg' %}" />
+    </li>
+    <li>
+      <img src="{% static 'home/images/image_3.jpg' %}" />
+    </li>
+    </ul>
+  </div>
+</div>
+
+<!--
+
+{% if list %}
 <ul>
-    {% for question in question_list %}
-    <li><a href="{% url 'home:detail' question.id %}">{{ question.question_text }}</a></li>
+    {% for item in list %}
     {% endfor %}
 </ul>
 {% else %}
 <p>No questions are available.</p>
 {% endif %}
+-->
+</body>
+</html>

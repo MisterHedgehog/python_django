@@ -5,7 +5,9 @@
 <form action="{% url 'home:vote' question.id %}" method="post">
     {% csrf_token %}
     {% for choice in question.choice_set.all %}
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+        <!-- name отвечает за имя результата POST, value - за значение реультата POST,
+         то есть передаётся {name : value} -->
+    <input type="radio" id="choice{{ forloop.counter }}" name="choice" value="{{ choice.id }}">
     <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
     {% endfor %}
     <input type="submit" value="Vote">

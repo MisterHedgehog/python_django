@@ -1,6 +1,6 @@
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.views import generic
 
-
-class Main(generic.TemplateView):
-    template_name = 'first_site/main.html'
 

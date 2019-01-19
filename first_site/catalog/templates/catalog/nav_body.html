@@ -1,0 +1,20 @@
+<ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'catalog:base' %}">Домой</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Категории
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% for c in categories %}
+                    {% if forloop.first %}
+                <a class="dropdown-item" href="{% url 'catalog:category' c.pk %}">{{ c.name }}</a>
+                    {% else %}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'catalog:category' c.pk %}">{{ c.name }}</a>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </li>
+        </ul>

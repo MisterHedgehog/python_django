@@ -1,0 +1,31 @@
+{% extends 'site/main.html' %}
+{% block title %}
+    {{ category.name }}
+{% endblock %}
+{% block nav_brand %}
+    {{ category.name }}
+{% endblock %}
+{% block nav_body %}
+                {% include 'catalog/nav_body.html' %}
+{% endblock %}
+{% block categories %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'catalog/css/style.css' %}">
+    <form action="" method="get">
+        {% for field in filter.form %}
+                <div class="mt-2">
+                    {{ field.label_tag }}
+                </div>
+                        {{ field }}
+        {% endfor %}
+        <input class="btn btn-warning m-2" style="width: fit-content" type="submit" value="Применить" />
+    </form>
+{% endblock %}
+
+{% block content %}
+    <div class="card-deck p-3">
+    {% for i in filter.qs %}
+{% include 'catalog/item_card.html' %}
+    {% endfor %}
+    </div>
+{% endblock %}

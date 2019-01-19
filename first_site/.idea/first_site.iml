@@ -21,14 +21,17 @@
     <orderEntry type="library" name="R User Library" level="project" />
     <orderEntry type="library" name="R Skeletons" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="jquery-3.3.1.slim" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
     <option name="TEMPLATE_FOLDERS">
       <list>
         <option value="$MODULE_DIR$/home/templates" />
-        <option value="$MODULE_DIR$/first_site/templates" />
         <option value="$MODULE_DIR$/templates" />
+        <option value="$MODULE_DIR$/catalog/templates" />
+        <option value="$MODULE_DIR$/catalog/templatetags" />
       </list>
     </option>
   </component>

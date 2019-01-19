@@ -1,0 +1,68 @@
+{% extends 'site/main.html' %}
+{% block nav_brand %}
+    {{ comments.count }}
+{% endblock %}
+{% block nav_body %}
+        {% include 'catalog/nav_body.html' %}
+{% endblock %}
+
+{#{% block categories %}#}
+{#{% endblock %}#}
+{% block content %}
+    <ul class="nav nav-tabs" style="background: rgba(0,0,0,0.125); min-height: fit-content" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="item-tab" data-toggle="tab" href="#item" role="tab" aria-controls="item" aria-selected="false">Описание</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="comments-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comments" aria-selected="true">Отзывы</a>
+        </li>
+    </ul>
+    <div class="tab-content m-2" id="myTabContent">
+        <div class="tab-pane fade show active" id="item" role="tabpanel" aria-labelledby="item-tab">
+            <div class="row">
+                <div class="col-4">
+                    <img class="w-100" src="{{ item.image.url }}">
+                </div>
+                <div class="col-8">
+                    <h3 class="text-center">{{ item.name }}</h3>
+                    <p> {{ item.description }}</p>
+                    <br>
+                    <p> Цена: <strong>{{ item.price }}</strong> бел руб</p>
+                    <form class="alert border border-grey rounded pb-0" action="{% url 'catalog:item' item.pk %}" method="post">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        {{ form.subject.errors }}
+                        <div class="form-group">
+                        {% load widget_tweaks %}
+                            {% for sub in form %}
+                                    <div class="row">
+                                        <label class="col-2" for="{{ sub.id_for_label }}">{{ sub.label_tag }}</label>
+                                        {% if sub.id_for_label|contains:'range' %}
+                                        {{ sub }}
+                                            {% else %}
+                                            <div class="col-2">{{ sub }}</div>
+                                    {% endif %}
+                                    </div>
+
+                            {% endfor %}
+                            <input class="btn btn-primary col-3 ml-auto mr-2" type="submit" value="Добавить в корзину">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade d-flex flex-column" style="min-height: 200px" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+{% for comment in comments %}
+{% include 'catalog/comment_to_item.html' with comment=comment %}
+
+{% endfor %}
+        <div class="p-2 d-flex">
+            {% if exist %}
+                <a href="{% url 'catalog:add_comment_to_item' item.pk %}" class="btn btn-warning align-self-end mt-auto ml-auto m-3">Редактировать отзыв</a>
+            {% else %}
+                <a href="{% url 'catalog:add_comment_to_item' item.pk %}" class="btn btn-warning align-self-end mt-auto ml-auto m-3">Добавить отзыв</a>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+{% endblock %}

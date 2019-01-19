@@ -1,0 +1,56 @@
+{% extends 'site/main.html' %}
+{% block nav_brand %}
+    {{ basket }}
+{% endblock %}
+{% block nav_body %}
+        {% include 'catalog/nav_body.html' %}
+{% endblock %}
+
+{#{% block categories %}#}
+{#{% endblock %}#}
+{% block content %}
+
+<table class="table table-striped">
+  <thead class="thead-light">
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Товар</th>
+        <th scope="col">Количество</th>
+        <th scope="col">Цена</th>
+        <th scope="col">Итог</th>
+        <th scope="col">Действие</th>
+    </tr>
+  </thead>
+  <tbody >
+  {% for i in items.values %}
+    <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td><a href="{% url 'catalog:item' i.pk %}">{{ i.name }}</a></td>
+        <td>{{ i.amount }}</td>
+        <td>{{ i.price }}</td>
+        <td>{{ i.total_price }}</td>
+        <td><a class="btn btn-outline-danger" href="{% url 'catalog:delete_from_basket' i.pk %}">Удалить</a></td>
+    </tr>
+  {% endfor %}
+  {% if sum %}
+      <tr>
+        <th scope="row">=</th>
+        <td></td>
+        <td></td>
+        <td>Итого:</td>
+        <td>{{ sum }}</td>
+        <td><a class="btn btn-danger" href="{% url 'catalog:clear_basket' %}">Удалить всё</a></td>
+      </tr>
+  {% endif %}
+  </tbody>
+</table>
+      {% if not sum %}
+          <div class="m-5">
+              <h3 class="text-center"><strong>Ваша корзина пуста!</strong></h3>
+              <br>
+              <div class="text-center">
+                  <a class="btn btn-grey align-self-center" href="{% url 'catalog:catalog' %}">В магазин</a>
+              </div>
+          </div>
+      {% endif %}
+{% endblock %}

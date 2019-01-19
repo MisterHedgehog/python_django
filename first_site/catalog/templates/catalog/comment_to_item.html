@@ -1,0 +1,25 @@
+<div class="list-group m-3">
+          <div class="list-group-item">
+              <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{ comment.short_comment }}</h5>
+                  <small class="text-muted mr-2 ml-auto mt-auto mb-auto">
+                      {% for i in 5|times %}
+                          {% if i < comment.mark %}&#9733;{% else %}&#9734;{% endif %}
+                      {% endfor %}
+                  </small>
+                  <small class="mt-auto mb-auto">{{ comment.date }}</small>
+              </div>
+          </div>
+      <div class="list-group-item">
+          <p class="mb-1">{{ comment.text_comment }}</p>
+      </div>
+          <div class="list-group-item p-0 d-flex flex-row">
+              <div class="alert alert-danger col-6 m-0" style="border-radius: 0">Недостатки<br>{{ comment.lim }}</div>
+              <div class="alert alert-success col-6 m-0" style="border-radius: 0">Достоинства<br>{{ comment.adv }}</div>
+          </div>
+          <div class="list-group-item d-flex">
+              <small class="mt-auto mb-auto">{{ comment.user.username }}</small>
+              <a href="#" class="btn btn-light m-2 ml-auto">Пожаловаться</a>
+              <a href="#" class="btn btn-light m-2">Потдвердить</a>
+          </div>
+</div>

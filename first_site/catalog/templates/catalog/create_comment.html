@@ -1,0 +1,49 @@
+{% extends 'site/main.html' %}
+{% block nav_brand %}
+{% endblock %}
+{% block nav_body %}
+        {% include 'catalog/nav_body.html' %}
+{% endblock %}
+
+{#{% block categories %}#}
+{#{% endblock %}#}
+{% block content %}
+    <form class="p-3 was-validated m-0" action="{% url 'catalog:add_comment_to_item' pk %}" method="post">
+    {% csrf_token %}
+        <div class="mb-3">
+            {{ form.non_field_errors }}
+            {{ form.errors }}
+        </div>
+        <div class="mb-3">
+{% include 'catalog/form_field.html' with field=form.short_comment %}
+{#    <textarea class="form-control is-invalid" id="validationTextarea" placeholder="Required example textarea" required></textarea>#}
+        </div>
+        <div class="mb-3">
+{% include 'catalog/form_field.html' with field=form.text_comment %}
+{#    <textarea class="form-control is-invalid" id="validationTextarea" placeholder="Required example textarea" required></textarea>#}
+        </div>
+        <div class="form-row">
+            <div class="mb-3 col-6">
+{% include 'catalog/form_field.html' with field=form.adv %}
+            </div>
+            <div class="mb-3 col-6">
+{% include 'catalog/form_field.html' with field=form.lim %}
+            </div>
+        </div>
+        <div class="form-group">
+{% include 'catalog/form_field.html' with field=form.mark %}
+{#    <select class="custom-select" required>#}
+{#      <option value="">Open this select menu</option>#}
+{#      <option value="1">Очень плохо</option>#}
+{#      <option value="2">Плохо</option>#}
+{#      <option value="3">Three</option>#}
+{#        <option value="3">Three</option>#}
+{#        <option value="3">Three</option>#}
+{#    </select>#}
+            <div class="invalid-feedback">Example invalid custom select feedback</div>
+        </div>
+        <div class="form-group d-flex m-0">
+            <input class="btn btn-primary col-3 ml-auto" type="submit" value="Готово">
+        </div>
+    </form>
+{% endblock %}

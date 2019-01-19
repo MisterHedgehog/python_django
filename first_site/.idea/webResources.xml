@@ -6,6 +6,13 @@
         <entryData>
           <resourceRoots>
             <path value="file://$PROJECT_DIR$/home/migrations" />
+            <path value="file://$PROJECT_DIR$/login/migrations" />
+            <path value="file://$PROJECT_DIR$/myprofile/migrations" />
+            <path value="file://$PROJECT_DIR$/first_site/static" />
+            <path value="file://$PROJECT_DIR$/catalog/static" />
+            <path value="file://$PROJECT_DIR$/catalog/media" />
+            <path value="file://$PROJECT_DIR$/media" />
+            <path value="file://$PROJECT_DIR$/static" />
           </resourceRoots>
         </entryData>
       </entry>

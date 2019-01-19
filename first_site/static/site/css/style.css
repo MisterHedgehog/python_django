@@ -1,0 +1,15 @@
+form{
+    width: inherit;
+}
+.bg-blue{
+    background: linear-gradient(0deg, rgba(48, 157, 230, 0), rgba(39, 107, 230, 0.13), rgba(39, 107, 230, 0.13), rgba(48, 157, 230, 0));
+}
+a{
+    color: #353535;
+}
+a:hover{
+    color: #353535;
+}
+/*.btn-group-vertical{*/
+    /*width: 80%;*/
+/*}*/

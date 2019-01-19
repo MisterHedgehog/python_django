@@ -1,0 +1,8 @@
+{% if user.is_authenticated %}
+  <div class="m-0 mr-3 text-center ml-auto"> Добро пожаловать, {{ user.username }}!</div>
+    <a class="btn btn-outline-info ml-auto" href="{% url 'catalog:basket' %}">Корзина</a>
+    <a class="btn btn-outline-info ml-2" href="{% url 'catalog:logout' %}">Выйти</a>
+{% else %}
+  <a class="btn btn-outline-info ml-auto" href="{% url 'catalog:login' %}">Войти</a>
+  <a class="btn btn-outline-info ml-2" href="{% url 'catalog:registration' %}">Зарегистрироваться</a>
+{% endif %}

@@ -38,9 +38,6 @@ def save_image(instance, filename):
     return "{0}/{1}".format(instance.name, filename)
 
 
-
-
-
 class Item(models.Model):
     class Meta:
         verbose_name = 'Базовый тавар'

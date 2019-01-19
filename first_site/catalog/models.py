@@ -131,6 +131,7 @@ class SmartPhone(ComputingDevice):
         super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
 
 
+
 class Comment(models.Model):
     V_BAD = 'Очень плохо'
     BAD = 'Плохо'

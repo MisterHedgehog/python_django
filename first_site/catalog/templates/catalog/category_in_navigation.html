@@ -1,17 +1,17 @@
 <div class="accordion" id="a{{ a_id }}">
-    {% for main_category in main_category.leaves.all %}
+    {% for main_class in main_class.get_subclasses %}
                         <div class="card p-0 border-0 m-0 rounded">
                         <div class="card-group border-0 p-0">
                             <a class="btn btn-default border-0 card m-0 col-9" data-toggle="collapse" data-target="#c{{ a_id }}{{ forloop.counter }}" style="background: rgba(0, 0, 0, {{ background|to_str }})">
-                                    {{ main_category.name }}
+                                    {{ main_class.category_name }}
                             </a>
-                            <a class="btn btn-default border-0 card m-0 col-3" href="{% url 'catalog:category' main_category.pk %}" style="background: rgba(0, 0, 0, {{ background|to_str }})">
+                            <a class="btn btn-default border-0 card m-0 col-3" href="{% url 'catalog:category' main_class.category_name %}" style="background: rgba(0, 0, 0, {{ background|to_str }})">
                             >
                             </a>
                         </div>
                             <div id="c{{ a_id }}{{ forloop.counter }}" class="collapse" data-parent="#a{{ a_id }}">
                                 <div class="card-body p-0">
-{% include 'catalog/category_in_navigation.html' with a_id=a_id|add_num:forloop.counter main_category=main_category background=background|del:2 %}
+{% include 'catalog/category_in_navigation.html' with a_id=a_id|add_num:forloop.counter main_class=main_class.cls background=background|del:2 %}
                                 </div>
                             </div>
                         </div>

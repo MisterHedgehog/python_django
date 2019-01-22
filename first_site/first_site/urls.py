@@ -6,7 +6,7 @@ from django.urls import include, path
 app_name = 'first_site'
 
 urlpatterns = [
-    #path('', include('catalog.urls'), name='base'),
+    path('', include('catalog.urls'), name='base'),
     path('admin/', admin.site.urls),
     ]
 if settings.DEBUG:

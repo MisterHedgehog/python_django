@@ -1,7 +1,6 @@
 {% extends 'site/main.html' %}
-{% block nav_brand %}
-    {{ comments.count }}
-{% endblock %}
+{#{% block nav_brand %}#}
+{#{% endblock %}#}
 {% block nav_body %}
         {% include 'catalog/nav_body.html' %}
 {% endblock %}
@@ -19,15 +18,29 @@
     </ul>
     <div class="tab-content m-2" id="myTabContent">
         <div class="tab-pane fade show active" id="item" role="tabpanel" aria-labelledby="item-tab">
-            <div class="row">
-                <div class="col-4">
-                    <img class="w-100" src="{{ item.image.url }}">
-                </div>
-                <div class="col-8">
+        {% include 'catalog/carousel.html' with images=item.images.all %}
                     <h3 class="text-center">{{ item.name }}</h3>
-                    <p> {{ item.description }}</p>
-                    <br>
-                    <p> Цена: <strong>{{ item.price }}</strong> бел руб</p>
+            <table class="table table-striped">
+  <thead class="thead-light">
+    <tr>
+        <th scope="col">Характеристика</th>
+        <th scope="col">Значение</th>
+    </tr>
+  </thead>
+  <tbody >
+        {% for key, item in info %}
+    <tr>
+    {% if item == '' %}
+        <td><b>{{ key }}</b></td>
+<td></td>
+    {% else %}
+        <td>{{ key }}</td>
+        <td>{{ item }}</td>
+    {% endif %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
                     <form class="alert border border-grey rounded pb-0" action="{% url 'catalog:item' item.pk %}" method="post">
                         {% csrf_token %}
                         {{ form.non_field_errors }}
@@ -36,21 +49,14 @@
                         {% load widget_tweaks %}
                             {% for sub in form %}
                                     <div class="row">
-                                        <label class="col-2" for="{{ sub.id_for_label }}">{{ sub.label_tag }}</label>
-                                        {% if sub.id_for_label|contains:'range' %}
-                                        {{ sub }}
-                                            {% else %}
-                                            <div class="col-2">{{ sub }}</div>
-                                    {% endif %}
+                                        <div class="ml-auto mr-2">{{ sub.label_tag }}</div>
+                                        {% render_field sub class+='form-control col-1' %}
+                                        <input class="btn btn-primary col-3 ml-2" type="submit" value="Добавить в корзину">
                                     </div>
-
                             {% endfor %}
-                            <input class="btn btn-primary col-3 ml-auto mr-2" type="submit" value="Добавить в корзину">
                         </div>
                     </form>
-                </div>
             </div>
-        </div>
         <div class="tab-pane fade d-flex flex-column" style="min-height: 200px" id="comments" role="tabpanel" aria-labelledby="comments-tab">
 {% for comment in comments %}
 {% include 'catalog/comment_to_item.html' with comment=comment %}

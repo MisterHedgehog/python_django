@@ -1,27 +1,18 @@
-{% extends 'site/main.html' %}
-{#{% block nav_brand %}#}
-{#    Каталог продукции#}
-{#{% endblock %}#}
-{% block nav_body %}
-{% endblock %}
-{% block content %}
-    <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+<div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
 {#            <ol class="carousel-indicators">#}
 {#              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>#}
 {#              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>#}
 {#              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>#}
 {#            </ol>#}
             <div class="carousel-inner" role="listbox">
-                {% for i in items %}
+                {% for i in images %}
                     {% if forloop.first %}
               <div class="carousel-item active text-center p-2">
-                <img class="d-block m-auto" src="{{ i.images.all.0.image.url }}" alt="First slide" style="height: 300px">
-                <a class="btn btn-primary m-2" href="{% url 'catalog:item' i.pk %}">{{ i.name }}</a>
+                <img class="d-block m-auto" src="{{ i.image.url }}" alt="First slide" style="height: 300px">
               </div>
                     {% else %}
               <div class="carousel-item text-center p-2">
-                <img class="d-block m-auto" src="{{ i.images.all.0.image.url }}" alt="Second slide" style="height: 300px">
-                  <a class="btn btn-primary m-2" href="{% url 'catalog:item' i.pk %}">{{ i.name }}</a>
+                <img class="d-block m-auto" src="{{ i.image.url }}" alt="Second slide" style="height: 300px">
               </div>
                     {% endif %}
                 {% endfor %}
@@ -39,13 +30,3 @@
               <span class="sr-only">Next</span>
             </a>
     </div>
-    <div class="w-100"></div>
-    <div class="p-3 row">
-
-    {% for i in items %}
-{% include 'catalog/item_card.html' %}
-    {% endfor %}
-    </div>
-{% endblock %}
-{% block filter %}
-{% endblock %}

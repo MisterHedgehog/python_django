@@ -1,5 +1,7 @@
 from django.template.defaultfilters import register
 
+from catalog.models import Item
+
 
 @register.filter(name='times')
 def times(number):
@@ -29,3 +31,9 @@ def to_str(num):
 @register.filter(name='contains')
 def contains(s: str, sub: str):
     return sub in s
+
+
+@register.filter(name='get_first')
+def get_first(dictionary: dict):
+    for item in dictionary:
+        return item

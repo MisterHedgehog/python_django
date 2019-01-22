@@ -30,6 +30,8 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
+    'djng',
+    'easy_thumbnails',
     'sortedm2m',
     'django_filters',
     'catalog',
@@ -135,3 +137,5 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+FORM_RENDERER = 'djng.forms.renderers.DjangoAngularBootstrap3Templates'

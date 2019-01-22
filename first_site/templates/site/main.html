@@ -56,7 +56,7 @@
 {% block categories %}
                 <h3 class="my-4">Категории</h3>
                     <div class="ml-auto mr-auto w-75">
-                            {% include 'catalog/category_in_navigation.html' with a_id='1' main_category=main_category background=0.12 %}
+                            {% include 'catalog/category_in_navigation.html' with a_id='1' background=0.12 main_class=main_class %}
                     </div>
 {#{% autoescape off %}#}
 {#{% autoescape %}#}
@@ -66,10 +66,13 @@
 {% block content %}
 {% endblock %}
                 </div>
-            <div class="col-2 p-0">
+            <div class="col-2 card m-2 text-center">
+                {% block filter %}
+                {% endblock %}
             </div>
         </div>
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src="{% static 'admin/js/bootstrap.min.js' %}"></script>
+                <script src="{% static 'catalog/js/catalog.js' %}"></script>
     </body>
 </html>

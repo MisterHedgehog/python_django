@@ -1,0 +1,26 @@
+{% load i18n static %}
+{% if items %}
+<ul class="pagination d-flex justify-content-center w-100">
+        {% if items.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo;{% trans 'Начало' %}</a>
+            </li>
+            <li class="page-item">
+            <a class="page-link" href="?page={{ items.previous_page_number }}">Назад</a>
+            </li>
+        {% endif %}
+
+        <li class="page-item">
+            <a class="page-link disabled">Страница {{ items.number }} из {{ items.paginator.num_pages }}</a>
+        </li>
+
+        {% if items.has_next %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{ items.next_page_number }}">{% trans 'Дальше' %}</a>
+            </li>
+            <li class="page-item">
+            <a class="page-link" href="?page={{ items.paginator.num_pages }}">Конец &raquo;</a>
+            </li>
+        {% endif %}
+    </ul>
+{% endif %}

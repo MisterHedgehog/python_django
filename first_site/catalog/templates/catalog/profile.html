@@ -1,0 +1,43 @@
+{% extends 'site/main.html' %}
+{#{% block nav_brand %}#}
+{#{% endblock %}#}
+{% block nav_body %}
+        {% include 'catalog/nav_body.html' %}
+{% endblock %}
+
+{#{% block categories %}#}
+{#{% endblock %}#}
+{% block content %}
+        <ul class="nav nav-tabs" style="background: rgba(0,0,0,0.125); min-height: fit-content" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="item-tab" data-toggle="tab" href="#item" role="tab" aria-controls="item" aria-selected="false">Обо мне</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="comments-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comments" aria-selected="true">Мои товары</a>
+        </li>
+                <li class="ml-auto mr-4 d-block p-2">{{ profile.balance }}</li>
+    </ul>
+
+
+    <div class="tab-content m-2" id="myTabContent">
+        <div class="tab-pane fade show active" id="item" role="tabpanel" aria-labelledby="item-tab">
+            <div class="text-center">
+                <img src="{{ profile.image.url }}" class="img-thumbnail rounded">
+                <div class="h3 m-5">{{ profile.user.username }}</div>
+                <div class="m-5">{{ profile.user.email }}</div>
+            </div>
+
+
+        </div>
+        <div class="tab-pane fade d-flex flex-column" style="min-height: 200px" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+                <div class="p-3 row d-flex justify-content-around">
+    {% for i in items %}
+{% include 'catalog/item_card.html' %}
+    {% endfor %}
+        <div class="w-100"></div>
+    {% include 'catalog/pagination.html' with items=items %}
+    </div>
+            <a class="btn btn-warning ml-auto mt-auto" href="{% url 'catalog:select_category_before_add' %}">Добавить товар</a>
+    </div>
+    </div>
+{% endblock %}

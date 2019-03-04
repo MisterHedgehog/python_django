@@ -1,13 +1,18 @@
 {% load static %}
 {% load  tags %}
-            <html lang="en">
+{% load i18n static %}
+<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
                 <head>
                     <title>{% block title %}Магазин{% endblock %}</title>
                     <meta charset="utf-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1">
                     <link rel="stylesheet" href="{% static 'admin/css/bootstrap.css' %}">
                     <link rel="stylesheet" href="{% static 'site/css/style.css' %}">
-                    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+{#                    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">#}
+                {% block head %}
+                {% endblock %}
                 </head>
                 <body>
 
@@ -21,7 +26,7 @@
               </button>
 
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        {% block nav_body %}
+{% block nav_body %}
                 <ul class="navbar-nav mr-auto">
                   <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
@@ -45,13 +50,13 @@
                   <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
-            {% endblock %}
+{% endblock %}
               </div>
 {% block nav_end %}
 {% include 'catalog/l_and_r_btn.html' %}
 {% endblock %}
         </nav>
-        <div class="card-deck m-0 h-100">
+        <div class="card-deck m-0" style="min-height: 100%">
             <div class="col-2 card m-2 text-center">
 {% block categories %}
                 <h3 class="my-4">Категории</h3>
@@ -71,8 +76,8 @@
                 {% endblock %}
             </div>
         </div>
-      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-      <script src="{% static 'admin/js/bootstrap.min.js' %}"></script>
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+                <script src="{% static 'admin/js/bootstrap.min.js' %}"></script>
                 <script src="{% static 'catalog/js/catalog.js' %}"></script>
     </body>
 </html>

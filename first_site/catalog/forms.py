@@ -4,7 +4,7 @@ from catalog.models import Comment
 
 
 class AmountForm(forms.Form):
-    amount = forms.IntegerField(min_value=1, max_value=10, label='Количество')
+    amount = forms.IntegerField(min_value=1, max_value=1000, label='Количество', initial=3)
 
 
 class CommentForm(forms.ModelForm):

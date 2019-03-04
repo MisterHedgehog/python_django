@@ -18,6 +18,11 @@ def mul(num1, num2):
     return num1*num2
 
 
+@register.filter(name='sub')
+def sub(num1, num2):
+    return num1-num2
+
+
 @register.filter(name='del')
 def delete(num1, num2):
     return num1/num2

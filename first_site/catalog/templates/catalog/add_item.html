@@ -1,0 +1,27 @@
+{% extends 'site/main.html' %}
+{% block nav_brand %}
+{% endblock %}
+{% block nav_body %}
+        {% include 'catalog/nav_body.html' %}
+{% endblock %}
+
+{#{% block categories %}#}
+{#{% endblock %}#}
+{% block content %}
+    {{ fc }}
+    <form class="p-3 was-validated m-0" action="{% url 'catalog:add_item_to_database' category %}" method="post">
+    {% csrf_token %}
+{#        <div class="mb-3">#}
+{#            {{ form.non_field_errors }}#}
+{#            {{ form.errors }}#}
+{#        </div>#}
+{#        {%  for field in form %}#}
+{#            <div class="row p-2"></div>#}
+{#            {{ field.label }}{{ field }}#}
+{#        {% endfor %}#}
+        {{ form.as_p }}
+        <div class="form-group d-flex m-0">
+            <input class="btn btn-primary col-3 ml-auto" type="submit" value="Готово">
+        </div>
+    </form>
+{% endblock %}

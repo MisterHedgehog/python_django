@@ -11,9 +11,11 @@
 
 {% block content %}
     <div class="card-deck p-3">
-    {% for i in filter.qs %}
+    {% for i in items %}
 {% include 'catalog/item_card.html' %}
     {% endfor %}
+    <div class="w-100"></div>
+        {% include 'catalog/pagination.html' with items=items %}
     </div>
 {% endblock %}
 {% block filter %}

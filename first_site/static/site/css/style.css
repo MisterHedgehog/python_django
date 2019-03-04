@@ -10,6 +10,8 @@ a{
 a:hover{
     color: #353535;
 }
-/*.btn-group-vertical{*/
-    /*width: 80%;*/
-/*}*/
+div.item-card{
+    height: 400px;
+    max-width: 20%;
+    flex: 0 0 25%;
+}

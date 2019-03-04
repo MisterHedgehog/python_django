@@ -5,7 +5,7 @@
                             <a class="btn btn-default border-0 card m-0 col-9" data-toggle="collapse" data-target="#c{{ a_id }}{{ forloop.counter }}" style="background: rgba(0, 0, 0, {{ background|to_str }})">
                                     {{ main_class.category_name }}
                             </a>
-                            <a class="btn btn-default border-0 card m-0 col-3" href="{% url 'catalog:category' main_class.category_name %}" style="background: rgba(0, 0, 0, {{ background|to_str }})">
+                            <a class="btn btn-default border-0 card m-0 col-3" href="{% url 'catalog:category' main_class.get_category_id %}" style="background: rgba(0, 0, 0, {{ background|to_str }})">
                             >
                             </a>
                         </div>

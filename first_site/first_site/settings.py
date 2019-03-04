@@ -30,19 +30,18 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
-    'djng',
-    'easy_thumbnails',
-    'sortedm2m',
-    'django_filters',
-    'catalog',
-    'widget_tweaks',
+    'widget_tweaks',     # Необходимо для работы с CSS внутри шаблона
+    'djng',              # Необходимо для функционирования widget_tweaks
+    'sortedm2m',         # Необходимо для присвоения одному товару нескольких изображений
+    'django_filters',    # Необходимо для фильтрации товаров
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites'
+    'django.contrib.sites',
+    'catalog',
 ]
 
 MIDDLEWARE = [

@@ -8,7 +8,6 @@ td a {
     width: -webkit-fill-available;
 }
 </style>
-    {% load widget_tweaks %}
 {% endblock %}
 {% block nav_body %}
         {% include 'catalog/nav_body.html' %}
@@ -26,8 +25,9 @@ td a {
         <th width="10%">Количество</th>
         <th width="10%">Цена</th>
         <th width="10%">Итог</th>
-        <th width="10%">Действие</th>
-        <th width="15%"></th>
+            {% if user.profile.balance >= sum %}
+        <th width="10%"></th>
+            {% endif %}
     </tr>
   </thead>
   <tbody >
@@ -35,18 +35,12 @@ td a {
     <tr>
         <th scope="row">{{ forloop.counter }}</th>
         <td><a href="{% url 'catalog:item' i.pk %}">{{ i.name }}</a></td>
-        <td>
-            <form class="row" method="post" href="">
-            {% csrf_token %}
-            <input type="hidden" value="{{ i.pk }}" name="counter" >
-            {% for f in i.form %}{% render_field f class+='form-control col-5' %}{% endfor %}
-            <input class="btn btn-warning form-control col-4 ml-2" type="submit" value="v">
-            </form>
-        </td>
+        <td>{{ i.amount }}</td>
         <td>{{ i.price }}</td>
         <td>{{ i.total_price }}</td>
-        <td><a class="btn btn-danger" href="{% url 'catalog:delete_from_basket' i.pk %}">Удалить</a></td>
+        {% if user.profile.balance >= sum %}
         <td></td>
+        {% endif %}
     </tr>
   {% endfor %}
 
@@ -56,11 +50,22 @@ td a {
         <td></td>
         <td>Итого:</td>
         <td>{{ sum }}</td>
-        <td><a class="btn btn-danger" href="{% url 'catalog:clear_basket' %}">Удалить всё</a></td>
-          <td><a class="btn btn-warning" href="{% url 'catalog:confirm_deal' %}">Оформить покупку</a></td>
+          {% if user.profile.balance >= sum %}
+          <td>
+              <a class="btn btn-warning" href="{% url 'catalog:make_deal' %}">Подтвердить</a>
+          </td>
+          {% endif %}
       </tr>
   </tbody>
 </table>
+      {% if user.profile.balance < sum %}
+                <div class="alert alert-danger d-flex justify-content-between ml-2 mr-2" role="alert">
+                    <div>Не хватает средств! На балансе: {{ user.profile.balance }}, необходимо ещё {{ sum|sub:user.profile.balance }} для подтверждения покупки.
+                    </div>
+                    <a class="btn btn-danger" href="{% url 'catalog:basket' %}">Вернутся в корзину</a>
+                </div>
+
+            {% endif %}
       {% else %}
           <div class="m-5">
               <h3 class="text-center"><strong>Ваша корзина пуста!</strong></h3>

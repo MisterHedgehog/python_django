@@ -1,4 +1,5 @@
 {% extends 'site/main.html' %}
+            {% load i18n static %}
 {#{% block nav_brand %}#}
 {#    Каталог продукции#}
 {#{% endblock %}#}
@@ -40,12 +41,24 @@
             </a>
     </div>
     <div class="w-100"></div>
-    <div class="p-3 row">
-
+    <div class="p-3 row d-flex justify-content-around">
     {% for i in items %}
 {% include 'catalog/item_card.html' %}
     {% endfor %}
+        <div class="w-100"></div>
+    {% include 'catalog/pagination.html' with items=items %}
     </div>
 {% endblock %}
 {% block filter %}
+        <form method="post" action="{% url 'catalog:catalog' %}">
+        <div class="form-group">
+            {% csrf_token %}
+            {% load widget_tweaks %}
+            {% for sub in form %}
+                    {{ sub.label_tag }}
+                    {% render_field sub class+='form-control' %}
+                    <input class="btn btn-primary" type="submit" value="Добавить товаров">
+            {% endfor %}
+        </div>
+    </form>
 {% endblock %}

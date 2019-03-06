@@ -4,14 +4,15 @@ from django.db import models
 from django.forms import MultiWidget, TextInput, CharField, NumberInput, IntegerField
 
 
+# кастомный виджет, отображающий два поля для ввода значений
+# от и до. Используется при создании диапазона во время сортировки.
 class RangeWidget(MultiWidget):
     def __init__(self, width, attrs=None):
         widgets = [NumberInput(attrs={'style': 'border-top-right-radius:0; border-bottom-right-radius:0',
                                       'placeholder': 'от', 'class': 'range'}),
                    NumberInput(attrs={'style': 'border-top-left-radius:0; border-bottom-left-radius:0',
                                       'placeholder': 'до', 'class': 'range'})]
-        super(RangeWidget, self).__init__(widgets, attrs)
-
+        super().__init__(widgets, attrs)
 
     def decompress(self, value):
         if value:
@@ -20,11 +21,13 @@ class RangeWidget(MultiWidget):
             return ['', '']
 
 
+# кастомное поле, отображающее два поля для ввода значений
+# от и до. Используется при создании диапазона во время сортировки.
 class RangeField(forms.MultiValueField):
     def __init__(self, width=100, *args, **kwargs):
         list_fields = [IntegerField(required=False),
                        IntegerField(required=False)]
-        super(RangeField, self).__init__(list_fields, widget=RangeWidget(width=width), *args, **kwargs)
+        super().__init__(list_fields, widget=RangeWidget(width=width), *args, **kwargs)
 
     def compress(self, data_list):
         if data_list:
@@ -32,6 +35,8 @@ class RangeField(forms.MultiValueField):
         return None
 
 
+# кастомный фильтр, отображающий два поля для ввода значений
+# от и до. Используется при создании диапазона во время сортировки.
 class RangeFilter(django_filters.Filter):
     field_class = RangeField
 

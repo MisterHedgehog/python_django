@@ -4,24 +4,24 @@ from django import forms
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.core import mail
 from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.views.generic import FormView
 from django.core.paginator import Paginator
 
-from .models import Item, Comment, Notebook, SmartPhone, get_class, get_item_child, get_end_classes, get_all_classes, Photo, Tablet, Profile
-from django.views import generic
+from .models import Item, Comment, Notebook, SmartPhone, get_class, get_item_child, get_end_classes, get_all_classes, Tablet, Profile
 from catalog.forms import AmountForm, CommentForm
-from django.forms.models import model_to_dict
 import random
+from django.core.mail import EmailMessage
 
 
 def redirect_to_catalog(request):
     return HttpResponseRedirect(reverse('catalog:catalog'))
 
 
-def show_catalog(request):
+def show_catalog(request):  # catalog/
     if request.method == 'POST':
         form = AmountForm(request.POST)
         if form.is_valid():
@@ -89,24 +89,27 @@ class BaseBasket:
         return sum
 
     def make_deal_and_delete(self, customer: Profile):
+        items = {}
         for (key, value) in self.basket.items():
             i = Item.objects.get(pk=key)
             amount = value['quantity']
             price = i.price * amount
             customer.balance -= price
             i.owner.balance += price
+            items[i.name] = dict(amount=amount, price=price)
             i.owner.save()
         customer.save()
         self.clear()
+        return items
 
 
-def delete_item_from_basket(request, pk):
+def delete_item_from_basket(request, pk):  # basket/<int:pk>/delete/
     basket = BaseBasket(request.session)
     basket.delete(pk)
     return HttpResponseRedirect(reverse('catalog:basket'))
 
 
-def clear_basket(request):
+def clear_basket(request):  # basket/delete/
     basket = BaseBasket(request.session)
     basket.clear()
     return HttpResponseRedirect(reverse('catalog:basket'))
@@ -122,7 +125,7 @@ def add_to_data_total_price_and_quantity(request, data=None):
     return data
 
 
-def show_basket(request):
+def show_basket(request):  # basket/
     basket = BaseBasket(request.session)
     items = {}
     sum = 0
@@ -143,14 +146,38 @@ def show_basket(request):
 
 
 @login_required
-def make_deal(request):
+def make_deal(request):  # deal/
+    connection = mail.get_connection()
+    # Manually open the connection
+    connection.open()
     basket = BaseBasket(request.session)
-    basket.make_deal_and_delete(request.user.profile)
+    items = basket.make_deal_and_delete(request.user.profile)
+    table = '{0:^30}{1:^10}{2:^10}\n'.format('название', 'кол.', 'цена')
+    total_price = 0
+    for item_name in items:
+        table += '{0:^30}{1:^10}{2:^10}\n'.format(item_name, items[item_name]['amount'], items[item_name]['price'])
+        total_price += items[item_name]['price']
+    table += '{0:>50}\n'.format('Итого:  {0}'.format(total_price))
+    user_name = request.user.username
+
+    title = "Удачное совершение покупки на сайте BoxMarket!"
+    body = """
+    Доброго времени суток, {0}
+    
+        Результат совершённой Вами покупки:
+    
+{1}       
+    
+    Благодарим за покупку, команда BoxMarket.
+    """.format(user_name, table)
+    email = EmailMessage(title, body, to=[request.user.email], connection=connection)
+    email.send()
+    connection.close()
     return render(request, 'catalog/success_deal.html', add_to_data_total_price_and_quantity(request))
 
 
 @login_required
-def show_deal(request):
+def show_deal(request):  # pre_deal/
     basket = BaseBasket(request.session)
     items = {}
     sum = 0
@@ -165,7 +192,7 @@ def show_deal(request):
     return render(request, 'catalog/deal.html', add_to_data_total_price_and_quantity(request, data))
 
 
-def show_item(request, pk):
+def show_item(request, pk):  # item/<int:pk>/
     if request.method == 'POST':
         form = AmountForm(data=request.POST)
         if form.is_valid():
@@ -180,7 +207,7 @@ def show_item(request, pk):
     return render(request, 'catalog/item.html', add_to_data_total_price_and_quantity(request, data))
 
 
-def show_category(request, category_id):
+def show_category(request, category_id):  # category/<int:category_id>/
     global name
     cls: dict = get_all_classes()
     for (key, value) in enumerate(cls):
@@ -196,13 +223,13 @@ def show_category(request, category_id):
     return render(request, 'catalog/category.html', add_to_data_total_price_and_quantity(request, data))
 
 
-def logout(request):
+def logout(request):  # logout/
     auth.logout(request)
     # Перенаправление на страницу.
     return HttpResponseRedirect(reverse('catalog:catalog'))
 
 
-class RegisterFormView(FormView):
+class RegisterFormView(FormView):  # reg/
     form_class = UserCreationForm
     # extra_context = {'categories': Category.objects.all()}
     success_url = "/"
@@ -215,7 +242,7 @@ class RegisterFormView(FormView):
 
 
 @login_required
-def add_comment_to_item(request, pk):
+def add_comment_to_item(request, pk):  # item/<int:pk>/add_comment
     comment = Comment.objects.filter(user=request.user, item__pk=pk)
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment[0]) if comment else CommentForm(request.POST)
@@ -231,7 +258,7 @@ def add_comment_to_item(request, pk):
 
 
 @login_required
-def add_item_to_database(request, category):
+def add_item_to_database(request, category):  # item/<int:category>/add
     category_name = get_end_classes()[category]
     form_class = get_class(category_name=category_name)
     if request.method == 'POST':
@@ -248,7 +275,7 @@ def add_item_to_database(request, category):
 
 
 @login_required
-def select_category_before_add_item(request):
+def select_category_before_add_item(request):  # item/select/add
     selected = 0
     if request.method == 'POST':
         selected = request.POST['category']
@@ -259,7 +286,7 @@ def select_category_before_add_item(request):
 
 
 @login_required
-def show_profile(request):
+def show_profile(request):  # profile
     profile: Profile = request.user.profile
     all_items = Item.objects.filter(owner=profile)
     paginator = Paginator(all_items, 24)

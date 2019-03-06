@@ -3,10 +3,12 @@ from django import forms
 from catalog.models import Comment
 
 
+# Простейшая форма, отображающая поле для ввода числа
 class AmountForm(forms.Form):
     amount = forms.IntegerField(min_value=1, max_value=1000, label='Количество', initial=3)
 
 
+# Форма, необходимая для созлания комментария к товару
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment

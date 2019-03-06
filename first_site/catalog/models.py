@@ -18,16 +18,20 @@ from catalog.filters import RangeFilter
 COLOR_CHOICES = ((0, 'Красный'), (1, 'Белый'), (2, 'Чёрный'), (3, 'Шоколадный'), (4, 'Хаки'))
 
 
+# Используется при сохранении изображения товара
+# Как поменять название функции?
 def save_image(instance, filename):
     return "{0}/{1}_{2}.{3}".format(instance.name, instance.name, strftime("%Y-%m-%d-%H-%M-%S", gmtime()),
                                     filename.split('.')[-1])
 
 
+# Используется при сохранении изображения пользователя
 def save_user_image(instance, filename):
     return "{0}/{1}_{2}.{3}".format(instance.user.username, instance.user.username, strftime("%Y-%m-%d-%H-%M-%S", gmtime()),
                                     filename.split('.')[-1])
 
 
+# Класс профиля пользователя, который при создании пользователя автоматически прикрепляется
 class Profile(models.Model):
     class Meta:
         verbose_name = 'Профиль пользователя'
@@ -64,6 +68,8 @@ class Brand(models.Model):
         return reverse('')
 
 
+# Класс изображения, создан только для того, чтобы изображения было удобно сортировать при их добавлении
+# к товару (у товара это поле SortedManyToManyField)
 class Photo(models.Model):
     class Meta:
         verbose_name = 'Изображение'
@@ -76,6 +82,7 @@ class Photo(models.Model):
         return self.name
 
 
+# Класс-родитель всех категорий товаров
 class Item(models.Model):
     class Meta:
         verbose_name = 'Базовый тавар'
@@ -101,12 +108,13 @@ class Item(models.Model):
             self.images.add(photo)
         return self
 
+    # Кек, сам не знаю для чего, но пусть полежит тут, не мешает
     @classmethod
     def cls(cls):
         return cls
 
     def get_absolute_url(self):
-        return reverse('catalog:item', {'pk': self.pk})
+        return reverse('catalog:item', args={'pk': self.pk})
 
     ###
     # Функция производит обход атрибутов модели, которых следует показывать пользователю
@@ -139,6 +147,7 @@ class Item(models.Model):
                 val = {'True': 'Да', 'False': 'Нет'}[val]
             yield (field.verbose_name, val)
 
+    # Необходимо для создания каждой категории уникального индекса, который будет передоваться в url
     def get_category_id(self):
         cls = get_all_classes()
         for (key, value) in enumerate(cls):
@@ -146,6 +155,7 @@ class Item(models.Model):
                 return key
         return 1
 
+    # Возвращает для каждой категории уникальный фильтр, который используется при сортировки товаров
     @classmethod
     def get_filter(cls, data):
         class ItemFilter(django_filters.FilterSet):
@@ -165,6 +175,7 @@ class Item(models.Model):
                 }
         return ItemFilter(data=data, queryset=cls.objects.all())
 
+    # Возвращает для каждой категории уникальную форму, которая используется при создании товара пользователем
     @classmethod
     def get_form(cls, data=None, instance=None):
         class ItemForm(forms.ModelForm):

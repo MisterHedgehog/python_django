@@ -50,15 +50,15 @@
     </div>
 {% endblock %}
 {% block filter %}
-        <form method="post" action="{% url 'catalog:catalog' %}">
-        <div class="form-group">
-            {% csrf_token %}
-            {% load widget_tweaks %}
-            {% for sub in form %}
-                    {{ sub.label_tag }}
-                    {% render_field sub class+='form-control' %}
-                    <input class="btn btn-primary" type="submit" value="Добавить товаров">
-            {% endfor %}
-        </div>
-    </form>
+{#        <form method="post" action="{% url 'catalog:catalog' %}">#}
+{#        <div class="form-group">#}
+{#            {% csrf_token %}#}
+{#            {% load widget_tweaks %}#}
+{#            {% for sub in form %}#}
+{#                    {{ sub.label_tag }}#}
+{#                    {% render_field sub class+='form-control' %}#}
+{#                    <input class="btn btn-primary" type="submit" value="Добавить товаров">#}
+{#            {% endfor %}#}
+{#        </div>#}
+{#    </form>#}
 {% endblock %}
